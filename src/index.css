@@ -23,3 +23,9 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+button[disabled] {
+	color: #aaa;
+	cursor: not-allowed;
+	transition: color 0.2s ease-in-out;
+}

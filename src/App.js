@@ -102,24 +102,28 @@ function App() {
 				</div>
 				<div className="mode-toggles">
 					<button
+						disabled={!hasBothImages}
 						className={mode === 'SLIDE' ? 'selected' : ''}
 						onClick={() => setMode('SLIDE')}
 					>
 						Slide
 					</button>
 					<button
+						disabled={!hasBothImages}
 						className={mode === 'DIFF' ? 'selected' : ''}
 						onClick={() => setMode('DIFF')}
 					>
 						Diff
 					</button>
 					<button
+						disabled={!hasBothImages}
 						className={mode === 'FADE' ? 'selected' : ''}
 						onClick={() => setMode('FADE')}
 					>
 						Fade
 					</button>
 					<button
+						disabled={!hasBothImages}
 						className={mode === 'FLASH' ? 'selected' : ''}
 						onClick={() => setMode('FLASH')}
 					>
