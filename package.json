@@ -1,6 +1,7 @@
 {
 	"name": "compare-images",
 	"version": "1.0.0",
+	"homepage": "/compare-images",
 	"private": true,
 	"dependencies": {
 		"cnz": "^1.0.3",
@@ -13,8 +14,10 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "yarn lint && react-scripts build",
 		"lint": "prettier --write .",
+		"predeploy": "yarn build",
+		"deploy": "gh-pages -d build",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
@@ -36,6 +39,7 @@
 		]
 	},
 	"devDependencies": {
+		"gh-pages": "^4.0.0",
 		"prettier": "^2.8.0"
 	}
 }
