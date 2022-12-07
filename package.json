@@ -1,6 +1,13 @@
 {
 	"name": "compare-images",
 	"homepage": "/compare-images",
+	"description": "Compare two images in a variety of ways",
+	"author": "rileyjshaw",
+	"license": "Unlicensed",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rileyjshaw/compare-images"
+	},
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
