@@ -2,15 +2,18 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import cnz from 'cnz';
 
+import { ArrowLeftRight, Info, Sliders } from 'lucide-react';
+
 import { useIsDragActive } from './hooks';
 import Comparison from './Comparison';
 
 import './App.css';
 
 function App() {
-	const [mode, setMode] = useState('SLIDE');
-	const [imageA, setImageA] = useState(null);
-	const [imageB, setImageB] = useState(null);
+	const [mode, setMode] = useState<ComparisonModes>('DIFF');
+	const [imageA, setImageA] = useState<Image | null>(null);
+	const [imageB, setImageB] = useState<Image | null>(null);
+	const hasAnImage = !!(imageA || imageB);
 	const hasBothImages = !!(imageA && imageB);
 
 	const isDragActive = useIsDragActive();
@@ -20,41 +23,54 @@ function App() {
 		setImageB(imageA);
 	}, [imageA, imageB]);
 
-	const onDrop = useCallback((setImage, acceptedFiles) => {
-		const file = acceptedFiles[0];
-		const img = new Image();
-		const url = URL.createObjectURL(file);
+	const onDrop = useCallback(
+		(setImage: (image: Image) => void, acceptedFiles: Blob[]) => {
+			const file = acceptedFiles[0];
+			const img = new Image();
+			const url = URL.createObjectURL(file);
 
-		img.onload = () => {
-			const reader = new FileReader();
-			// reader.onabort = () => console.log('File reading was aborted.');
-			// reader.onerror = () => console.log('File reading has failed.');
-			reader.onload = () => {
-				setImage({
-					img,
-					dataUrl: reader.result,
-					height: img.height,
-					width: img.width,
-					url,
-				});
+			img.onload = () => {
+				const reader = new FileReader();
+				// reader.onabort = () => console.log('File reading was aborted.');
+				// reader.onerror = () => console.log('File reading has failed.');
+				reader.onload = () => {
+					setImage({
+						img,
+						dataUrl: reader.result,
+						height: img.height,
+						width: img.width,
+						url,
+					});
+				};
+				reader.readAsDataURL(acceptedFiles[0]);
 			};
-			reader.readAsDataURL(acceptedFiles[0]);
-		};
 
-		img.src = url;
-	}, []);
+			img.src = url;
+		},
+		[]
+	);
 	const onDropA = useCallback(
-		(...args) => onDrop(setImageA, ...args),
+		(acceptedFiles: Blob[]) => onDrop(setImageA, acceptedFiles),
 		[onDrop]
 	);
 	const onDropB = useCallback(
-		(...args) => onDrop(setImageB, ...args),
+		(acceptedFiles: Blob[]) => onDrop(setImageB, acceptedFiles),
 		[onDrop]
 	);
 
 	// Clean up generated URLs to avoid memory leaks.
-	useEffect(() => () => URL.revokeObjectURL(imageA?.url), [imageA]);
-	useEffect(() => () => URL.revokeObjectURL(imageB?.url), [imageB]);
+	useEffect(
+		() => () => {
+			imageA?.url && URL.revokeObjectURL(imageA.url);
+		},
+		[imageA]
+	);
+	useEffect(
+		() => () => {
+			imageB?.url && URL.revokeObjectURL(imageB.url);
+		},
+		[imageB]
+	);
 
 	const {
 		getRootProps: getRootPropsA,
@@ -82,23 +98,28 @@ function App() {
 			<header className="App-header">
 				<div className="title">
 					<h1>Compare images</h1>
-					{hasBothImages && (
-						<>
-							<button className="title-button" onClick={swap}>
-								🔀
-							</button>
-							<button
-								className="title-button"
-								onClick={() =>
-									alert(
-										'Drag two images in and compare them with a variety of tools. Sorry, I haven’t written better instructions than this yet.'
-									)
-								}
-							>
-								ℹ️
-							</button>
-						</>
-					)}
+					<button
+						onClick={() =>
+							alert(
+								'Drag two images in and compare them with a variety of tools. Sorry, I haven’t written better instructions than this yet.'
+							)
+						}
+					>
+						<Info size={18} />
+					</button>
+					<button disabled={!hasAnImage} onClick={swap}>
+						<ArrowLeftRight size={18} />
+					</button>
+					<button
+						disabled={!hasBothImages}
+						onClick={() =>
+							alert(
+								'TODO: Allow images to be dragged, and store their new position as an offset.'
+							)
+						}
+					>
+						<Sliders size={18} />
+					</button>
 				</div>
 				<div className="mode-toggles">
 					<button

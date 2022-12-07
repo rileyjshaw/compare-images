@@ -6,14 +6,28 @@ function useForceUpdate() {
 }
 
 // `keyHandlers` example: {Escape: {onDown: () => setOpen(false)}}.
-export function useKeyPresses({ keyHandlers, accept, ignore }) {
+export function useKeyPresses({
+	keyHandlers,
+	accept,
+	ignore,
+}: {
+	keyHandlers?: Record<
+		string,
+		{
+			onDown?: (pressedKeys: Set<string>) => void;
+			onUp?: (pressedKeys: Set<string>) => void;
+		}
+	>;
+	accept?: RegExp;
+	ignore?: RegExp;
+}) {
 	// We keep key state in a ref so we can just mutate the same Set…
-	const pressedKeysRef = useRef(new Set());
+	const pressedKeysRef = useRef<Set<string>>(new Set());
 	// …but we still need a way to tell calling components to re-render.
 	const forceUpdate = useForceUpdate();
 
 	useEffect(() => {
-		function skipKey({ key, metaKey }) {
+		function skipKey({ key, metaKey }: KeyboardEvent) {
 			return (
 				metaKey ||
 				(accept && !accept.test(key)) ||
@@ -21,7 +35,7 @@ export function useKeyPresses({ keyHandlers, accept, ignore }) {
 			);
 		}
 
-		function downHandler(e) {
+		function downHandler(e: KeyboardEvent) {
 			if (skipKey(e)) return;
 			const { key } = e;
 			e.preventDefault();
@@ -33,7 +47,7 @@ export function useKeyPresses({ keyHandlers, accept, ignore }) {
 			handlers?.onDown?.(pressedKeysRef.current);
 		}
 
-		function upHandler(e) {
+		function upHandler(e: KeyboardEvent) {
 			if (skipKey(e)) return;
 			const { key } = e;
 			e.preventDefault();
@@ -61,22 +75,22 @@ export function useIsDragActive() {
 	const [isDragActive, setIsDragActive] = useState(false);
 
 	useEffect(() => {
-		function dragEnterHandler(e) {
+		function dragEnterHandler(e: DragEvent) {
 			e.preventDefault();
 			setIsDragActive(true);
 		}
 
-		function dragLeaveHandler(e) {
+		function dragLeaveHandler(e: DragEvent) {
 			e.preventDefault();
 			setIsDragActive(false);
 		}
 
-		function dragOverHandler(e) {
+		function dragOverHandler(e: DragEvent) {
 			e.preventDefault();
 			setIsDragActive(true);
 		}
 
-		function dropHandler(e) {
+		function dropHandler(e: DragEvent) {
 			e.preventDefault();
 			setIsDragActive(false);
 		}

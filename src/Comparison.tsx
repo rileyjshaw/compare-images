@@ -11,7 +11,12 @@ const keyConfig = {
 	accept: /^[A-Za-z0-9,. ]|Space$/,
 };
 
-function Slide({ imageA, imageB }) {
+interface ComparisonProps {
+	imageA: Image;
+	imageB: Image;
+}
+
+function Slide({ imageA, imageB }: ComparisonProps) {
 	return (
 		<div className="slide-container">
 			<ReactCompareImage
@@ -25,11 +30,11 @@ function Slide({ imageA, imageB }) {
 	);
 }
 
-function Diff({ imageA, imageB }) {
+function Diff({ imageA, imageB }: ComparisonProps) {
 	const [isImageDiffed, setIsImageDiffed] = useState(false);
 
 	const canvasRef = useCallback(
-		(canvas) => {
+		(canvas: HTMLCanvasElement | null) => {
 			// Unblock the initial render.
 			setTimeout(() => {
 				setIsImageDiffed(false);
@@ -38,7 +43,11 @@ function Diff({ imageA, imageB }) {
 				const { width, height } = imageA;
 				canvas.width = width;
 				canvas.height = height;
+
 				const ctx = canvas.getContext('2d');
+				if (!ctx) {
+					throw new Error('Could not get canvas context.');
+				}
 
 				// Note: This doesn’t work because it’s the raw file data, not pixel data.
 				// const imageAData = new Uint8Array(imageA.arrayBuffer);
@@ -102,7 +111,7 @@ function Diff({ imageA, imageB }) {
 	);
 }
 
-function Fade({ imageA, imageB }) {
+function Fade({ imageA, imageB }: ComparisonProps) {
 	const [fadeAmount, setFadeAmount] = useState(0.5);
 
 	return (
@@ -132,11 +141,15 @@ function Fade({ imageA, imageB }) {
 		</div>
 	);
 }
-function Flash({ imageA, imageB }) {
+
+function Flash({ imageA, imageB }: ComparisonProps) {
+	const [isMouseDown, setIsMouseDown] = useState(false);
 	const pressedKeys = useKeyPresses(keyConfig);
-	const showImageB = !!pressedKeys.size;
+	const showImageB = isMouseDown || !!pressedKeys.size;
 	return (
 		<img
+			onMouseDown={() => setIsMouseDown(true)}
+			onMouseUp={() => setIsMouseDown(false)}
 			className="full-image"
 			src={showImageB ? imageB.url : imageA.url}
 			alt=""
@@ -144,16 +157,20 @@ function Flash({ imageA, imageB }) {
 	);
 }
 
-function Comparison({ mode, ...props }) {
+function Comparison({
+	mode,
+	imageA,
+	imageB,
+}: { mode: ComparisonModes } & ComparisonProps) {
 	switch (mode) {
 		case 'SLIDE':
-			return <Slide {...props} />;
+			return <Slide imageA={imageA} imageB={imageB} />;
 		case 'DIFF':
-			return <Diff {...props} />;
+			return <Diff imageA={imageA} imageB={imageB} />;
 		case 'FADE':
-			return <Fade {...props} />;
+			return <Fade imageA={imageA} imageB={imageB} />;
 		case 'FLASH':
-			return <Flash {...props} />;
+			return <Flash imageA={imageA} imageB={imageB} />;
 		default:
 			return null;
 	}

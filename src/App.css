@@ -23,10 +23,15 @@ header {
 }
 
 .title {
+	align-items: center;
 	display: flex;
 	font-weight: 700;
 	font-size: 18px;
 	gap: 12px;
+}
+
+.title button {
+	display: flex;
 }
 
 .mode-toggles {
