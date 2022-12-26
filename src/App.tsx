@@ -10,7 +10,7 @@ import Comparison from './Comparison';
 import './App.css';
 
 function App() {
-	const [mode, setMode] = useState<ComparisonModes>('DIFF');
+	const [mode, setMode] = useState<ComparisonModes>('SLIDE');
 	const [imageA, setImageA] = useState<Image | null>(null);
 	const [imageB, setImageB] = useState<Image | null>(null);
 	const hasAnImage = !!(imageA || imageB);
