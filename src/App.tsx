@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import cnz from 'cnz';
+import { StepType, useTour } from '@reactour/tour';
 
-import { ArrowLeftRight, Info, Sliders } from 'lucide-react';
+import { ArrowLeftRight, Info /* , Sliders */ } from 'lucide-react';
 
 import { useIsDragActive } from './hooks';
 import Comparison from './Comparison';
@@ -10,6 +11,7 @@ import Comparison from './Comparison';
 import './App.css';
 
 function App() {
+	const { setIsOpen, setSteps, setCurrentStep } = useTour();
 	const [mode, setMode] = useState<ComparisonModes>('SLIDE');
 	const [imageA, setImageA] = useState<Image | null>(null);
 	const [imageB, setImageB] = useState<Image | null>(null);
@@ -93,24 +95,36 @@ function App() {
 		multiple: false,
 	});
 
+	useEffect(() => {
+		setSteps(
+			hasBothImages ? [tourSteps[0], ...tourSteps.slice(2)] : tourSteps
+		);
+	}, [hasBothImages]);
+
 	return (
 		<div className="App">
 			<header className="App-header">
 				<div className="title">
 					<h1>Compare images</h1>
 					<button
-						onClick={() =>
-							alert(
-								'Drag two images in and compare them with a variety of tools. Sorry, I haven’t written better instructions than this yet.'
-							)
-						}
+						title="Help"
+						onClick={() => {
+							setCurrentStep(0);
+							setIsOpen(true);
+						}}
 					>
 						<Info size={18} />
 					</button>
-					<button disabled={!hasAnImage} onClick={swap}>
+					<button
+						title="Swap images"
+						disabled={!hasAnImage}
+						onClick={swap}
+						className="swap"
+					>
 						<ArrowLeftRight size={18} />
 					</button>
-					<button
+					{/* <button
+						title="Reposition images"
 						disabled={!hasBothImages}
 						onClick={() =>
 							alert(
@@ -119,33 +133,45 @@ function App() {
 						}
 					>
 						<Sliders size={18} />
-					</button>
+					</button> */}
 				</div>
 				<div className="mode-toggles">
 					<button
 						disabled={!hasBothImages}
-						className={mode === 'SLIDE' ? 'selected' : ''}
+						className={cnz(
+							'mode-slide',
+							mode === 'SLIDE' && 'selected'
+						)}
 						onClick={() => setMode('SLIDE')}
 					>
 						Slide
 					</button>
 					<button
 						disabled={!hasBothImages}
-						className={mode === 'DIFF' ? 'selected' : ''}
+						className={cnz(
+							'mode-diff',
+							mode === 'DIFF' && 'selected'
+						)}
 						onClick={() => setMode('DIFF')}
 					>
 						Diff
 					</button>
 					<button
 						disabled={!hasBothImages}
-						className={mode === 'FADE' ? 'selected' : ''}
+						className={cnz(
+							'mode-fade',
+							mode === 'FADE' && 'selected'
+						)}
 						onClick={() => setMode('FADE')}
 					>
 						Fade
 					</button>
 					<button
 						disabled={!hasBothImages}
-						className={mode === 'FLASH' ? 'selected' : ''}
+						className={cnz(
+							'mode-flash',
+							mode === 'FLASH' && 'selected'
+						)}
 						onClick={() => setMode('FLASH')}
 					>
 						Flash
@@ -204,5 +230,54 @@ function App() {
 		</div>
 	);
 }
+
+export const tourSteps: StepType[] = [
+	{
+		selector: 'noSelector',
+		content:
+			'This application helps you compare two images against one-another using a variety of methods.',
+		position: 'center',
+		padding: { mask: 0 },
+	},
+	{
+		selector: 'noSelector',
+		content:
+			'Start by dragging the images that you want to compare into the app.',
+		highlightedSelectors: ['.dropzone', '.dropzone + .dropzone'],
+		padding: { mask: 0 },
+	},
+	{
+		selector: '.mode-slide',
+		content:
+			'Slide mode lets you gradually reveal the second image by dragging your mouse left and right.',
+	},
+	{
+		selector: '.mode-diff',
+		content:
+			'Diff mode compares images pixel-by-pixel, then highlights the differences. It is most useful when you want to spot the difference between two images that are nearly identical.',
+	},
+	{
+		selector: '.mode-fade',
+		content:
+			'Fade mode lets you gradually fade between the first and second image. Drag the slider on the right to adjust the fade amount.',
+	},
+	{
+		selector: '.mode-flash',
+		content:
+			'Flash mode initially shows the first image. Click the image or press any key on your keyboard to reveal the second image.',
+	},
+	{
+		selector: '.swap',
+		content:
+			'You can swap the first and second images by clicking this button.',
+	},
+	{
+		selector: 'noSelector',
+		content:
+			'If you want to change the images at any point, just drag new images into the app.',
+		position: 'center',
+		padding: { mask: 0 },
+	},
+];
 
 export default App;
