@@ -696,10 +696,10 @@ prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-react-compare-image@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-compare-image/-/react-compare-image-3.3.0.tgz#5666205f80ddbfeab56b1ae49d67e145482a4649"
-  integrity sha512-RNua/cBqosKFvMfI+GLdraUaTunhstsQoPi3DWvrAmCBoJRDVoLskxFsLDV4JNfFJMiRlcLyAAPKZoAA4f8Upw==
+react-compare-slider@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-compare-slider/-/react-compare-slider-2.2.0.tgz#c4229aa39a7a30c9b3efc2937c471107b437ac4c"
+  integrity sha512-I77xqulpoibZ9eqjn5wjpZL5IRpUZYcUlde70YaJ+MORGbUThrjTlHKl/UeGyCIPUWtPID5f5/zK9Q+1ovQLeA==
 
 react-dom@^18.2.0:
   version "18.2.0"

@@ -1,5 +1,9 @@
-import { Fragment, useCallback, useState } from 'react';
-import ReactCompareImage from 'react-compare-image'; // TODO: React Compare Slider might be better.
+import { useCallback, useState } from 'react';
+import {
+	ReactCompareSlider,
+	ReactCompareSliderHandle,
+	ReactCompareSliderImage,
+} from 'react-compare-slider';
 import pixelmatch from 'pixelmatch';
 import cnz from 'cnz';
 
@@ -19,12 +23,19 @@ interface ComparisonProps {
 function Slide({ imageA, imageB }: ComparisonProps) {
 	return (
 		<div className="slide-container">
-			<ReactCompareImage
-				leftImage={imageA.url}
-				rightImage={imageB.url}
-				sliderLineColor="#000"
-				sliderLineWidth={1}
-				handle={<Fragment />}
+			<ReactCompareSlider
+				itemOne={<ReactCompareSliderImage src={imageA.url} alt="" />}
+				itemTwo={<ReactCompareSliderImage src={imageB.url} alt="" />}
+				handle={
+					<ReactCompareSliderHandle
+						buttonStyle={{ display: 'none' }}
+						linesStyle={{
+							height: '100%',
+							width: 1,
+							background: '#000',
+						}}
+					/>
+				}
 			/>
 		</div>
 	);
