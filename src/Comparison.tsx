@@ -79,7 +79,7 @@ function Diff({ imageA, imageB }: ComparisonProps) {
 					width,
 					height,
 					{
-						threshold: 0.1,
+						threshold: 0.5,
 					}
 				);
 				ctx.clearRect(0, 0, width, height);
