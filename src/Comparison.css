@@ -68,3 +68,7 @@
 	width: 180px;
 	height: 24px;
 }
+
+.flash-container img {
+	pointer-events: none;
+}

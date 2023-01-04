@@ -99,6 +99,10 @@ body {
 		'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	/* Improve mobile usability. */
+	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
 }
 
 button[disabled] {

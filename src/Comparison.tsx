@@ -158,13 +158,19 @@ function Flash({ imageA, imageB }: ComparisonProps) {
 	const pressedKeys = useKeyPresses(keyConfig);
 	const showImageB = isMouseDown || !!pressedKeys.size;
 	return (
-		<img
+		<div
+			className="full-image flash-container"
 			onMouseDown={() => setIsMouseDown(true)}
+			onTouchStart={() => setIsMouseDown(true)}
 			onMouseUp={() => setIsMouseDown(false)}
-			className="full-image"
-			src={showImageB ? imageB.url : imageA.url}
-			alt=""
-		/>
+			onTouchEnd={() => setIsMouseDown(false)}
+		>
+			<img
+				className="full-image"
+				src={showImageB ? imageB.url : imageA.url}
+				alt=""
+			/>
+		</div>
 	);
 }
 
