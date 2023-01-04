@@ -237,14 +237,12 @@ export const tourSteps: StepType[] = [
 		content:
 			'This application helps you compare two images against one-another using a variety of methods.',
 		position: 'center',
-		padding: { mask: 0 },
 	},
 	{
 		selector: 'noSelector',
 		content:
 			'Start by dragging the images that you want to compare into the app.',
 		highlightedSelectors: ['.dropzone', '.dropzone + .dropzone'],
-		padding: { mask: 0 },
 	},
 	{
 		selector: '.mode-slide',
@@ -276,7 +274,6 @@ export const tourSteps: StepType[] = [
 		content:
 			'If you want to change the images at any point, just drag new images into the app.',
 		position: 'center',
-		padding: { mask: 0 },
 	},
 ];
 

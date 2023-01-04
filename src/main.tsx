@@ -15,7 +15,12 @@ const tourStyles = {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
-		<TourProvider steps={tourSteps} showBadge={false} styles={tourStyles}>
+		<TourProvider
+			steps={tourSteps}
+			showBadge={false}
+			styles={tourStyles}
+			padding={{ mask: 0 }}
+		>
 			<App />
 		</TourProvider>
 	</React.StrictMode>
