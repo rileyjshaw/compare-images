@@ -28,6 +28,7 @@ header {
 	font-weight: 700;
 	font-size: 18px;
 	gap: 12px;
+	padding-right: 12px;
 }
 
 .title button {
@@ -87,8 +88,10 @@ main {
 }
 
 .helper-text {
-	font-size: 28px;
+	padding: 0 8px;
+	font-size: clamp(12px, 4vw, 28px);
 	font-weight: 700;
+	text-align: center;
 	color: #aaa;
 }
 
@@ -96,4 +99,10 @@ main {
 	background: #fff;
 	max-width: 50%;
 	border: 1px solid #000;
+}
+
+@media screen and (max-width: 512px) {
+	h1 {
+		display: none;
+	}
 }
